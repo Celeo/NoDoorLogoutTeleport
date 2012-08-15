@@ -1,5 +1,5 @@
 name: NoDoorLogoutTeleport
 authors: [a245001, Celeo]
 main: com.gmail.a245001.NoDoorLogoutTeleport.NoDoorLogoutTeleport
-version: 0.2
+version: 0.2.1
 description: Prevents players from glitching out in doors.

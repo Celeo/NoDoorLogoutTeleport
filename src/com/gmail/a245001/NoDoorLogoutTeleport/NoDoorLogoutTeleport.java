@@ -1,5 +1,6 @@
 package com.gmail.a245001.NoDoorLogoutTeleport;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,43 +15,33 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class NoDoorLogoutTeleport extends JavaPlugin implements Listener {
 
-	public boolean enabled;
-	public Map<String, Location> playersToCheck;
-
-	@Override
-	public void onDisable() {
-		Clear();
-		enabled = false;
-		Logger.getLogger("Minecraft").log(Level.INFO,
-				"NoDoorLogoutTeleport disabled");
-	}
+	public Map<String, Location> playersToCheck = new HashMap<String, Location>();
 
 	@Override
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(this, this);
-		enabled = true;
-		Logger.getLogger("Minecraft").log(Level.INFO,
-				"NoDoorLogoutTeleport enabled and listening");
+		Logger.getLogger("Minecraft").info("Enabled");
+	}
+
+	@Override
+	public void onDisable() {
+		Logger.getLogger("Minecraft").info("Disabled");
 	}
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		if (!enabled)
-			return;
 		AddPlayer(event.getPlayer().getName(), event.getPlayer().getLocation());
 	}
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		if (!enabled)
-			return;
 		Player pl = event.getPlayer();
 		if (PlayerExists(pl.getName())) {
 			pl.teleport(GetPlayer(pl.getName()));
 			Logger.getLogger("Minecraft").log(
 					Level.INFO,
 					"NoDoorLogoutTeleport: Teleported player " + pl.getName()
-							+ " to:" + GetPlayer(pl.getName()));
+					+ " to:" + GetPlayer(pl.getName()));
 			RemovePlayer(pl.getName());
 		}
 	}
@@ -63,7 +54,7 @@ public class NoDoorLogoutTeleport extends JavaPlugin implements Listener {
 		Logger.getLogger("Minecraft").log(
 				Level.INFO,
 				"NoDoorLogoutTeleport: Added player " + name
-						+ " to list, position:" + _pos);
+				+ " to list, position:" + _pos);
 	}
 
 	private boolean PlayerExists(String _name) {
